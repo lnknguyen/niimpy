@@ -6,7 +6,7 @@ from . import database
 from . import util
 import pandas as pd
 
-def read_sqlite(filename, table, user=database.ALL, limit=None, offset=None, start=None, end=None):
+def read_sqlite(filename, table, user=database.ALL, limit=None, offset=None, start=None, end=None, tzinfo=util.TZ):
     """Read DataFrame from sqlite3 database
 
     This will read data from a sqlite3 file, taking sensor data in a
@@ -39,7 +39,7 @@ def read_sqlite(filename, table, user=database.ALL, limit=None, offset=None, sta
         Same meaning as 'start', but for end time
     """
     db = database.Data1(filename)
-    return db.raw(table, user, limit=limit, offset=offset, start=start, end=end)
+    return db.raw(table, user, limit=limit, offset=offset, start=start, end=end, tzinfo=tzinfo)
 
 def read_sqlite_tables(filename):
     """Return names of all tables in this database
@@ -52,7 +52,7 @@ def read_sqlite_tables(filename):
 
 
 
-def read_csv(filename, read_csv_options={}):
+def read_csv(filename, tzinfo=util.TZ, read_csv_options={}):
     """Read DataFrame from csv file
 
     This will read data from a csv file and then process the result with
@@ -73,5 +73,5 @@ def read_csv(filename, read_csv_options={}):
 
     # df_normalize converts sets the index to time values and does other time
     # conversions.  Inplace.
-    util.df_normalize(df)
+    util.df_normalize(df, tzinfo=tzinfo)
     return df

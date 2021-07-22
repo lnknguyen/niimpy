@@ -64,33 +64,33 @@ def uninstall_extensions():
 
 #TODO: reanme to data.py
 
-def df_normalize(df, old_tz=None):
+def df_normalize(df, tzinfo=TZ, old_tz=None):
     """Normalize a df (from sql) before presenting it to the user.
 
     This sets the dataframe index to the time values, and converts times
     to pandas.TimeStamp:s.  Modifies the data frame inplace.
     """
     if 'time' in df:
-        df.index = to_datetime(df['time'])
+        df.index = to_datetime(df['time'], tzinfo=tzinfo)
         df.index.name = None
         df['datetime'] = df.index
     elif 'day' in df and 'hour' in df:
         index = df[['day', 'hour']].apply(lambda row: pd.Timestamp('%s %s:00'%(row['day'], row['hour'])), axis=1)
         if old_tz is not None:
             # old_tz is given - e.g. sqlite already converts it to localtime
-            index = index.dt.tz_localize(old_tz).dt.tz_convert(TZ)
+            index = index.dt.tz_localize(old_tz).dt.tz_convert(tzinfo)
         else:
-            index = index.dt.tz_localize(TZ)
+            index = index.dt.tz_localize(tzinfo)
         df.index = index
         df.index.name = None
 
 
-def to_datetime(value):
+def to_datetime(value, tzinfo=TZ):
     times = pd.to_datetime(value, unit='s', utc=True)
     if isinstance(times, pd.Series):
-        return times.dt.tz_convert(TZ)
+        return times.dt.tz_convert(tzinfo)
     else:
-        return times.tz_convert(TZ)
+        return times.tz_convert(tzinfo)
 
 
 

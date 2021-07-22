@@ -20,3 +20,7 @@ DATA2_CSV = os.path.join(_dirname, 'AwareBattery.csv')
 
 # A syntethic survey PHQ9 dataset
 SURVEY_PHQ9 = os.path.join(_dirname, 'survey_phq9.csv')
+
+# Data for tests
+
+TEST_TIMEZONE = os.path.join(_dirname, 'test_timezone.csv')
