@@ -1,15 +1,15 @@
 import contextlib
-from dateutil.tz import tzlocal
+import dateutil.tz
 import numpy as np
 import os
 import pandas as pd
 import sys
 
 
-#SYSTEM_TZ = tzlocal()  # the operating system timezone - for sqlite output compat
-SYSTEM_TZ = 'Europe/Helsinki'
-TZ = tzlocal()
-TZ = 'Europe/Helsinki'
+#SYSTEM_TZ = dateutil.tz.tzlocal()  # the operating system timezone - for sqlite output compat
+SYSTEM_TZ = dateutil.tz.gettz('Europe/Helsinki')
+TZ = dateutil.tz.tzlocal()
+TZ = dateutil.tz.gettz('Europe/Helsinki')
 
 def set_tz(tz):
     """Globally set the preferred local timezone"""
